@@ -3,7 +3,8 @@
 CMakeCache.txt
 CMakeFiles
 cmake_install.cmake_install
-
+_deps
+build
 .cache
 
 *.o

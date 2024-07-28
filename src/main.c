@@ -6,6 +6,7 @@
 #include <SDL_log.h>
 #include <SDL_rect.h>
 #include <SDL_render.h>
+#include <SDL_scancode.h>
 #include <SDL_timer.h>
 #include <SDL_video.h>
 #include <stdbool.h>
@@ -15,8 +16,11 @@
 
 #include "defs.h"
 #include "draw.h"
+#include "input.h"
 
 App app;
+int lateralMovement = 0;
+int verticalMovement = 0;
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
@@ -52,19 +56,44 @@ void initSDL(void) {
   }
 }
 
-void BF_processInput(void) {
-  SDL_Event e;
-  while (SDL_PollEvent(&e)) {
-    switch (e.type) {
-    case SDL_QUIT:
-      exit(0);
-      break;
-
-    default:
-      break;
-    }
-  }
-}
+// void BF_processInput(void) {
+//   SDL_Event e;
+//   while (SDL_PollEvent(&e)) {
+//     switch (e.type) {
+//     case SDL_QUIT:
+//       exit(0);
+//       break;
+//
+//     case SDL_KEYDOWN:
+//       if (e.key.repeat == 0) {
+//         if (e.key.keysym.scancode == SDL_SCANCODE_LEFT) {
+//           lateralMovement = -10;
+//         }
+//
+//         if (e.key.keysym.scancode == SDL_SCANCODE_RIGHT) {
+//           lateralMovement = 10;
+//         }
+//
+//         if (e.key.keysym.scancode == SDL_SCANCODE_UP) {
+//           verticalMovement = -10;
+//         }
+//
+//         if (e.key.keysym.scancode == SDL_SCANCODE_DOWN) {
+//           verticalMovement = 10;
+//         }
+//       }
+//       break;
+//
+//     case SDL_KEYUP:
+//       lateralMovement = 0;
+//       verticalMovement = 0;
+//       break;
+//
+//     default:
+//       break;
+//     }
+//   }
+// }
 
 int main(void) {
 
@@ -74,23 +103,25 @@ int main(void) {
   initSDL();
 
   SDL_Event e;
+  SDL_Rect dest;
+
+  dest.x = 100;
+  dest.y = 100;
 
   while (1) {
-    BF_prepare();
-    BF_processInput();
+    BF_prepare(&app);
+    BF_ProcessInput();
 
-    SDL_Texture *texture = IMG_LoadTexture(app.renderer, "assets/ballon.png");
+    SDL_Texture *texture = IMG_LoadTexture(app.renderer, "assets/balloon.png");
 
-    SDL_Rect dest;
-
-    dest.x = 100;
-    dest.y = 100;
+    dest.x = dest.x + lateralMovement;
+    dest.y = dest.y + verticalMovement;
 
     SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
 
     SDL_RenderCopy(app.renderer, texture, NULL, &dest);
 
-    BF_present();
+    BF_present(&app);
     SDL_Delay(16);
   }
 
