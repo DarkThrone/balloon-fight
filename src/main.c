@@ -17,6 +17,7 @@
 #include "defs.h"
 #include "draw.h"
 #include "input.h"
+#include "widgets.h"
 
 App app;
 int lateralMovement = 0;
@@ -108,6 +109,8 @@ int main(void) {
   dest.x = 100;
   dest.y = 100;
 
+  BF_Create_FPS_W();
+
   while (1) {
     BF_prepare(&app);
     BF_ProcessInput();
@@ -124,6 +127,8 @@ int main(void) {
     BF_present(&app);
     SDL_Delay(16);
   }
+
+  BF_Destroy_FPS_W();
 
   return 0;
 }

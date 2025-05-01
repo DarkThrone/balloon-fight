@@ -16,6 +16,7 @@ PlayerInput *playerInputList[PLAYER_COUNT];
 
 void _BF_ProcessKey(SDL_EventType evType, SDL_KeyboardEvent *ev);
 void BF_ProcessInput(void);
-int BF_AddPlayerInput(PlayerInput *playerInputController);
+void BF_AddPlayerInput(PlayerInput *playerInput);
+void BF_ClearPlayerInput(void);
 
 #endif
