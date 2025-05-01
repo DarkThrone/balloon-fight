@@ -6,7 +6,7 @@ cmake_install.cmake_install
 _deps
 build
 .cache
-
+.idea
 *.o
 
 BFight
